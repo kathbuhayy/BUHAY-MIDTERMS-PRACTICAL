@@ -1,8 +1,3 @@
-/* ================================
-   SPOTIFY TRACK MANAGER
-   SET 1 PRACTICAL EXAM
-================================ */
-
 * {
   box-sizing: border-box;
 }
@@ -25,9 +20,6 @@ select {
   font-family: inherit;
 }
 
-/* ================================
-   MAIN APP
-================================ */
 
 .app {
   min-height: 100vh;
@@ -39,10 +31,6 @@ select {
     ),
     #050708;
 }
-
-/* ================================
-   HEADER
-================================ */
 
 .topbar {
   min-height: 80px;
@@ -196,9 +184,6 @@ select {
   color: #1ed760;
 }
 
-/* ================================
-   DASHBOARD
-================================ */
 
 .dashboard {
   width: calc(100% - 52px);
@@ -211,11 +196,6 @@ select {
 
   gap: 20px;
 }
-
-/* ================================
-   PANELS
-================================ */
-
 .panel {
   border: 1px solid #1b2921;
   border-radius: 13px;
@@ -253,10 +233,6 @@ select {
   font-weight: 700;
   letter-spacing: 0.1px;
 }
-
-/* ================================
-   FORM
-================================ */
 
 .register-panel {
   padding: 26px;
@@ -316,10 +292,6 @@ select {
   box-shadow: 0 0 0 1px rgba(30, 215, 96, 0.18);
 }
 
-/* MUI Select */
-
-/* MUI Select */
-
 .dark-select {
   height: 49px !important;
 
@@ -329,22 +301,17 @@ select {
   border-radius: 8px !important;
 }
 
-/* SELECTED / DISPLAYED TEXT */
 .dark-select .MuiSelect-select {
   color: #ffffff !important;
 }
 
-/* PLACEHOLDER TEXT */
 .dark-select .placeholder {
   color: #ffffff !important;
 }
 
-/* DROPDOWN ARROW */
 .dark-select .MuiSelect-icon {
   color: #ffffff !important;
 }
-
-/* BORDER */
 .dark-select .MuiOutlinedInput-notchedOutline {
   border-color: #26312d !important;
 }
@@ -356,8 +323,6 @@ select {
 .dark-select.Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: #1ed760 !important;
 }
-
-/* DROPDOWN MENU */
 .MuiMenu-paper {
   background: #0b1011 !important;
 }
@@ -374,8 +339,6 @@ select {
   background: rgba(30, 215, 96, 0.18) !important;
   color: #ffffff !important;
 }
-
-/* Role */
 
 .role-field {
   margin-top: 5px;
@@ -403,9 +366,6 @@ select {
 .role-group .MuiRadio-root.Mui-checked {
   color: #1ed760;
 }
-
-/* Add Button */
-
 .add-track-button {
   width: 100% !important;
   height: 56px !important;
@@ -428,10 +388,6 @@ select {
   box-shadow: 0 0 20px rgba(30, 215, 96, 0.12) !important;
 }
 
-/* ================================
-   RIGHT COLUMN
-================================ */
-
 .right-column {
   display: flex;
   flex-direction: column;
@@ -439,10 +395,6 @@ select {
 
   min-width: 0;
 }
-
-/* ================================
-   REGISTRY
-================================ */
 
 .registry-panel {
   padding: 22px 14px 18px;
@@ -487,10 +439,6 @@ select {
   margin-left: auto;
   font-size: 20px;
 }
-
-/* ================================
-   TABLE
-================================ */
 
 .table-wrapper {
   overflow-x: auto;
@@ -564,10 +512,6 @@ select {
   font-size: 12px;
 }
 
-/* ================================
-   ROLE BADGES
-================================ */
-
 .role-badge {
   display: inline-flex;
   align-items: center;
@@ -592,10 +536,6 @@ select {
   color: #8bc9ef;
   background: rgba(48, 112, 160, 0.18);
 }
-
-/* ================================
-   PAGINATION
-================================ */
 
 .pagination {
   display: flex;
@@ -646,10 +586,6 @@ select {
   color: #555b58;
   cursor: not-allowed;
 }
-
-/* ================================
-   ACTIVE TRACK
-================================ */
 
 .active-panel {
   padding: 22px 27px 29px;
@@ -787,10 +723,6 @@ select {
   font-weight: 700;
 }
 
-/* ================================
-   FOOTER
-================================ */
-
 .footer {
   min-height: 70px;
 
@@ -811,10 +743,6 @@ select {
   color: #1ed760;
   font-size: 17px;
 }
-
-/* ================================
-   RESPONSIVE
-================================ */
 
 @media (max-width: 1150px) {
   .dashboard {

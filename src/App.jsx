@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaSpotify } from "react-icons/fa";
 
 import {
@@ -123,19 +123,106 @@ function App() {
   const [activeTrack, setActiveTrack] = useState(tracks[0]);
 
   // =====================================================
+  // SELECTED TRACK
+  // =====================================================
+
+  const [selectedTrackId, setSelectedTrackId] = useState(
+    String(tracks[0].id)
+  );
+
+  // =====================================================
   // ROLE FILTER
   // =====================================================
 
   const [roleFilter, setRoleFilter] = useState("All Roles");
 
   // =====================================================
+  // CONTROLLED PAGINATION STATE
+  // =====================================================
+
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 3,
+  });
+
+  // =====================================================
   // FILTER TRACKS
   // =====================================================
 
-  const filteredTracks =
-    roleFilter === "All Roles"
-      ? tracks
-      : tracks.filter((track) => track.role === roleFilter);
+  const filteredTracks = useMemo(() => {
+    if (roleFilter === "All Roles") {
+      return tracks;
+    }
+
+    return tracks.filter(
+      (track) => track.role === roleFilter
+    );
+  }, [tracks, roleFilter]);
+
+  // =====================================================
+  // USE EFFECT
+  // =====================================================
+  // Keeps the Active Track Profile synchronized
+  // with the selected track.
+  // =====================================================
+
+  useEffect(() => {
+    const selectedTrack = filteredTracks.find(
+      (track) =>
+        String(track.id) === selectedTrackId
+    );
+
+    if (selectedTrack) {
+      setActiveTrack(selectedTrack);
+
+      // Automatically move to the page where
+      // the selected track is located.
+      const selectedIndex = filteredTracks.findIndex(
+        (track) =>
+          String(track.id) === selectedTrackId
+      );
+
+      if (selectedIndex >= 0) {
+        const targetPage = Math.floor(
+          selectedIndex / pagination.pageSize
+        );
+
+        if (pagination.pageIndex !== targetPage) {
+          setPagination((current) => ({
+            ...current,
+            pageIndex: targetPage,
+          }));
+        }
+      }
+
+      return;
+    }
+
+    // If the selected track is no longer available
+    // because of the filter, select the first track.
+    if (filteredTracks.length > 0) {
+      const firstTrack = filteredTracks[0];
+
+      setSelectedTrackId(String(firstTrack.id));
+      setActiveTrack(firstTrack);
+
+      setPagination((current) => ({
+        ...current,
+        pageIndex: 0,
+      }));
+    } else {
+      setActiveTrack(null);
+
+      setPagination((current) => ({
+        ...current,
+        pageIndex: 0,
+      }));
+    }
+  }, [
+    selectedTrackId,
+    filteredTracks,
+    pagination.pageSize,
+  ]);
 
   // =====================================================
   // FORM VALIDATION
@@ -146,7 +233,8 @@ function App() {
 
     // Track Title
     if (!trackTitle.trim()) {
-      newErrors.trackTitle = "Track title is required.";
+      newErrors.trackTitle =
+        "Track title is required.";
     } else if (trackTitle.trim().length < 3) {
       newErrors.trackTitle =
         "Track title must be at least 3 characters.";
@@ -154,12 +242,14 @@ function App() {
 
     // Genre
     if (!genre) {
-      newErrors.genre = "Please select a genre.";
+      newErrors.genre =
+        "Please select a genre.";
     }
 
-    // Artist Name
+    // Artist
     if (!artistName.trim()) {
-      newErrors.artistName = "Artist name is required.";
+      newErrors.artistName =
+        "Artist name is required.";
     } else if (artistName.trim().length < 3) {
       newErrors.artistName =
         "Artist name must be at least 3 characters.";
@@ -167,8 +257,12 @@ function App() {
 
     // BPM / Rating
     if (!bpm) {
-      newErrors.bpm = "Rating / BPM is required.";
-    } else if (Number(bpm) < 1 || Number(bpm) > 100) {
+      newErrors.bpm =
+        "Rating / BPM is required.";
+    } else if (
+      Number(bpm) < 1 ||
+      Number(bpm) > 100
+    ) {
       newErrors.bpm =
         "Rating / BPM must be between 1 and 100.";
     }
@@ -177,7 +271,9 @@ function App() {
     if (!recordLabel.trim()) {
       newErrors.recordLabel =
         "Record label name is required.";
-    } else if (recordLabel.trim().length < 3) {
+    } else if (
+      recordLabel.trim().length < 3
+    ) {
       newErrors.recordLabel =
         "Record label must be at least 3 characters.";
     }
@@ -210,12 +306,47 @@ function App() {
       role: role,
     };
 
-    setTracks((currentTracks) => [
-      ...currentTracks,
+    const updatedTracks = [
+      ...tracks,
       newTrack,
-    ]);
+    ];
 
-    setActiveTrack(newTrack);
+    setTracks(updatedTracks);
+
+    // Select the newly added track.
+    setSelectedTrackId(
+      String(newTrack.id)
+    );
+
+    // =================================================
+    // AUTOMATICALLY FIND THE NEW TRACK'S PAGE
+    // =================================================
+
+    const updatedFilteredTracks =
+      roleFilter === "All Roles"
+        ? updatedTracks
+        : updatedTracks.filter(
+            (track) =>
+              track.role === roleFilter
+          );
+
+    const newTrackIndex =
+      updatedFilteredTracks.findIndex(
+        (track) =>
+          track.id === newTrack.id
+      );
+
+    if (newTrackIndex >= 0) {
+      const targetPage = Math.floor(
+        newTrackIndex /
+          pagination.pageSize
+      );
+
+      setPagination((current) => ({
+        ...current,
+        pageIndex: targetPage,
+      }));
+    }
 
     // Clear form
     setTrackTitle("");
@@ -239,7 +370,8 @@ function App() {
         columnHelper.display({
           id: "number",
           header: "#",
-          cell: ({ row }) => row.getDisplayIndex() + 1,
+          cell: ({ row }) =>
+            row.getDisplayIndex() + 1,
         }),
 
         columnHelper.accessor("title", {
@@ -299,30 +431,41 @@ function App() {
 
     data: filteredTracks,
 
-    getRowId: (row) => String(row.id),
+    getRowId: (row) =>
+      String(row.id),
 
     enableRowSelection: true,
 
     enableMultiRowSelection: false,
 
-    initialState: {
-      pagination: {
-        pageIndex: 0,
-        pageSize: 3,
-      },
+    // IMPORTANT:
+    // Pagination is now controlled by React state.
+    state: {
+      pagination,
     },
+
+    onPaginationChange: setPagination,
   });
 
   // =====================================================
-  // UI
+  // PAGINATION VALUES
   // =====================================================
+
+  const currentPage =
+    pagination.pageIndex + 1;
+
+  const pageCount =
+    Math.max(1, table.getPageCount());
+
+  const canGoPrevious =
+    pagination.pageIndex > 0;
+
+  const canGoNext =
+    pagination.pageIndex <
+    table.getPageCount() - 1;
 
   return (
     <div className="app">
-
-      {/* =========================
-          HEADER
-      ========================= */}
 
       <header className="topbar">
 
@@ -362,6 +505,7 @@ function App() {
           <span></span>
           <span></span>
           <span></span>
+          <span></span>
         </div>
 
         <div className="music-circle">
@@ -370,16 +514,7 @@ function App() {
 
       </header>
 
-
-      {/* =========================
-          MAIN DASHBOARD
-      ========================= */}
-
       <main className="dashboard">
-
-        {/* =========================
-            REGISTER NEW TRACK
-        ========================= */}
 
         <section className="panel register-panel">
 
@@ -388,7 +523,9 @@ function App() {
             <EditNoteIcon />
 
             <div>
-              <h2>REGISTER NEW TRACK</h2>
+              <h2>
+                REGISTER NEW TRACK
+              </h2>
 
               <p>
                 Add a new track to the registry
@@ -397,15 +534,11 @@ function App() {
 
           </div>
 
-
-          {/* FORM */}
-
           <form
             className="form-content"
             onSubmit={handleSubmit}
           >
 
-            {/* TRACK TITLE */}
 
             <div className="field-group">
 
@@ -419,7 +552,9 @@ function App() {
                 placeholder="Enter track title"
                 value={trackTitle}
                 onChange={(event) => {
-                  setTrackTitle(event.target.value);
+                  setTrackTitle(
+                    event.target.value
+                  );
 
                   if (errors.trackTitle) {
                     setErrors({
@@ -437,9 +572,6 @@ function App() {
               )}
 
             </div>
-
-
-            {/* GENRE */}
 
             <div className="field-group">
 
@@ -480,7 +612,9 @@ function App() {
                   }}
 
                   onChange={(event) => {
-                    setGenre(event.target.value);
+                    setGenre(
+                      event.target.value
+                    );
 
                     if (errors.genre) {
                       setErrors({
@@ -523,9 +657,6 @@ function App() {
 
             </div>
 
-
-            {/* ARTIST */}
-
             <div className="field-group">
 
               <label>
@@ -538,7 +669,9 @@ function App() {
                 placeholder="Enter artist name"
                 value={artistName}
                 onChange={(event) => {
-                  setArtistName(event.target.value);
+                  setArtistName(
+                    event.target.value
+                  );
 
                   if (errors.artistName) {
                     setErrors({
@@ -557,9 +690,6 @@ function App() {
 
             </div>
 
-
-            {/* BPM */}
-
             <div className="field-group">
 
               <label>
@@ -574,7 +704,9 @@ function App() {
                 placeholder="1 - 100"
                 value={bpm}
                 onChange={(event) => {
-                  setBpm(event.target.value);
+                  setBpm(
+                    event.target.value
+                  );
 
                   if (errors.bpm) {
                     setErrors({
@@ -593,9 +725,6 @@ function App() {
 
             </div>
 
-
-            {/* RECORD LABEL */}
-
             <div className="field-group">
 
               <label>
@@ -608,7 +737,9 @@ function App() {
                 placeholder="Enter record label"
                 value={recordLabel}
                 onChange={(event) => {
-                  setRecordLabel(event.target.value);
+                  setRecordLabel(
+                    event.target.value
+                  );
 
                   if (errors.recordLabel) {
                     setErrors({
@@ -626,9 +757,6 @@ function App() {
               )}
 
             </div>
-
-
-            {/* USER ROLE */}
 
             <div className="field-group role-field">
 
@@ -662,9 +790,6 @@ function App() {
 
             </div>
 
-
-            {/* SUBMIT */}
-
             <Button
               type="submit"
               variant="contained"
@@ -678,16 +803,7 @@ function App() {
 
         </section>
 
-
-        {/* =========================
-            RIGHT COLUMN
-        ========================= */}
-
         <div className="right-column">
-
-          {/* =========================
-              TRACK REGISTRY
-          ========================= */}
 
           <section className="panel registry-panel">
 
@@ -711,9 +827,6 @@ function App() {
 
               </div>
 
-
-              {/* ROLE FILTER */}
-
               <div className="filter-area">
 
                 <FilterAltIcon />
@@ -723,11 +836,38 @@ function App() {
                   <Select
                     value={roleFilter}
                     onChange={(event) => {
-                      setRoleFilter(
-                        event.target.value
-                      );
+                      const newFilter =
+                        event.target.value;
 
-                      table.setPageIndex(0);
+                      setRoleFilter(newFilter);
+
+                      // Reset to page 1 whenever
+                      // the role filter changes.
+                      setPagination((current) => ({
+                        ...current,
+                        pageIndex: 0,
+                      }));
+
+                      // Select the first track
+                      // belonging to the new filter.
+                      const newFilteredTracks =
+                        newFilter === "All Roles"
+                          ? tracks
+                          : tracks.filter(
+                              (track) =>
+                                track.role ===
+                                newFilter
+                            );
+
+                      if (
+                        newFilteredTracks.length > 0
+                      ) {
+                        setSelectedTrackId(
+                          String(
+                            newFilteredTracks[0].id
+                          )
+                        );
+                      }
                     }}
                     className="role-filter"
                   >
@@ -753,8 +893,6 @@ function App() {
             </div>
 
 
-            {/* TABLE */}
-
             <div className="table-wrapper">
 
               <table className="track-table">
@@ -763,7 +901,9 @@ function App() {
 
                   {table.getHeaderGroups().map(
                     (headerGroup) => (
-                      <tr key={headerGroup.id}>
+                      <tr
+                        key={headerGroup.id}
+                      >
 
                         {headerGroup.headers.map(
                           (header) => (
@@ -789,25 +929,38 @@ function App() {
 
                 <tbody>
 
-                  {table.getRowModel().rows.length > 0 ? (
+                  {table.getRowModel().rows.length >
+                  0 ? (
 
-                    table.getRowModel().rows.map(
-                      (row) => (
+                    table
+                      .getRowModel()
+                      .rows
+                      .map((row) => (
 
                         <tr
                           key={row.id}
 
                           className={
-                            row.getIsSelected()
+                            selectedTrackId ===
+                            String(
+                              row.original.id
+                            )
                               ? "selected-row"
                               : ""
                           }
 
                           onClick={() => {
-                            row.toggleSelected(true);
-                            setActiveTrack(
-                              row.original
+
+                            row.toggleSelected(
+                              true
                             );
+
+                            setSelectedTrackId(
+                              String(
+                                row.original.id
+                              )
+                            );
+
                           }}
                         >
 
@@ -827,8 +980,7 @@ function App() {
 
                         </tr>
 
-                      )
-                    )
+                      ))
 
                   ) : (
 
@@ -854,27 +1006,28 @@ function App() {
 
             </div>
 
-
-            {/* PAGINATION */}
-
             <div className="pagination">
 
               <button
                 type="button"
 
                 className={`pagination-button ${
-                  !table.getCanPreviousPage()
+                  !canGoPrevious
                     ? "disabled"
                     : ""
                 }`}
 
-                disabled={
-                  !table.getCanPreviousPage()
-                }
+                disabled={!canGoPrevious}
 
-                onClick={() =>
-                  table.previousPage()
-                }
+                onClick={() => {
+                  if (canGoPrevious) {
+                    setPagination((current) => ({
+                      ...current,
+                      pageIndex:
+                        current.pageIndex - 1,
+                    }));
+                  }
+                }}
               >
 
                 <ArrowBackIosNewIcon />
@@ -885,15 +1038,7 @@ function App() {
 
 
               <span>
-
-                Page{" "}
-
-                {table.state.pagination.pageIndex + 1}
-
-                {" "}of{" "}
-
-                {table.getPageCount()}
-
+                Page {currentPage} of {pageCount}
               </span>
 
 
@@ -901,18 +1046,22 @@ function App() {
                 type="button"
 
                 className={`pagination-button ${
-                  !table.getCanNextPage()
+                  !canGoNext
                     ? "disabled"
                     : ""
                 }`}
 
-                disabled={
-                  !table.getCanNextPage()
-                }
+                disabled={!canGoNext}
 
-                onClick={() =>
-                  table.nextPage()
-                }
+                onClick={() => {
+                  if (canGoNext) {
+                    setPagination((current) => ({
+                      ...current,
+                      pageIndex:
+                        current.pageIndex + 1,
+                    }));
+                  }
+                }}
               >
 
                 Next
@@ -925,10 +1074,6 @@ function App() {
 
           </section>
 
-
-          {/* =========================
-              ACTIVE TRACK PROFILE
-          ========================= */}
 
           <section className="panel active-panel">
 
@@ -950,12 +1095,10 @@ function App() {
 
             </div>
 
-
             {activeTrack && (
 
               <div className="active-content">
 
-                {/* ALBUM ART */}
 
                 <div className="album-art">
 
@@ -976,8 +1119,6 @@ function App() {
                 </div>
 
 
-                {/* TRACK DETAILS */}
-
                 <div className="track-details">
 
                   <h3>
@@ -988,8 +1129,6 @@ function App() {
                     {activeTrack.artist}
                   </p>
 
-
-                  {/* GENRE */}
 
                   <div className="detail-row">
 
@@ -1004,9 +1143,6 @@ function App() {
                     </strong>
 
                   </div>
-
-
-                  {/* ARTIST */}
 
                   <div className="detail-row">
 
@@ -1023,8 +1159,6 @@ function App() {
                   </div>
 
 
-                  {/* BPM */}
-
                   <div className="detail-row">
 
                     <SpeedIcon />
@@ -1038,9 +1172,6 @@ function App() {
                     </strong>
 
                   </div>
-
-
-                  {/* RECORD LABEL */}
 
                   <div className="detail-row">
 
@@ -1056,8 +1187,6 @@ function App() {
 
                   </div>
 
-
-                  {/* USER ROLE */}
 
                   <div className="profile-role">
 
@@ -1086,11 +1215,6 @@ function App() {
         </div>
 
       </main>
-
-
-      {/* =========================
-          FOOTER
-      ========================= */}
 
       <footer className="footer">
 
