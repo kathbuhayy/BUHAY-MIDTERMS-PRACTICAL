@@ -1,5 +1,14 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FaSpotify } from "react-icons/fa";
+
+import {
+  createColumnHelper,
+  createPaginatedRowModel,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  tableFeatures,
+  useTable,
+} from "@tanstack/react-table";
 
 import {
   Button,
@@ -25,10 +34,22 @@ import AddIcon from "@mui/icons-material/Add";
 
 import "./App.css";
 
+// =====================================================
+// TANSTACK TABLE FEATURES
+// =====================================================
+
+const features = tableFeatures({
+  rowPaginationFeature,
+  rowSelectionFeature,
+  paginatedRowModel: createPaginatedRowModel(),
+});
+
+const columnHelper = createColumnHelper();
+
 function App() {
-  // =========================
+  // =====================================================
   // FORM STATE
-  // =========================
+  // =====================================================
 
   const [trackTitle, setTrackTitle] = useState("");
   const [genre, setGenre] = useState("");
@@ -37,15 +58,15 @@ function App() {
   const [recordLabel, setRecordLabel] = useState("");
   const [role, setRole] = useState("Creator");
 
-  // =========================
+  // =====================================================
   // ERROR STATE
-  // =========================
+  // =====================================================
 
   const [errors, setErrors] = useState({});
 
-  // =========================
+  // =====================================================
   // SAMPLE TRACKS
-  // =========================
+  // =====================================================
 
   const [tracks, setTracks] = useState([
     {
@@ -95,21 +116,30 @@ function App() {
     },
   ]);
 
-  // =========================
+  // =====================================================
   // ACTIVE TRACK
-  // =========================
+  // =====================================================
 
   const [activeTrack, setActiveTrack] = useState(tracks[0]);
 
-  // =========================
+  // =====================================================
   // ROLE FILTER
-  // =========================
+  // =====================================================
 
   const [roleFilter, setRoleFilter] = useState("All Roles");
 
-  // =========================
+  // =====================================================
+  // FILTER TRACKS
+  // =====================================================
+
+  const filteredTracks =
+    roleFilter === "All Roles"
+      ? tracks
+      : tracks.filter((track) => track.role === roleFilter);
+
+  // =====================================================
   // FORM VALIDATION
-  // =========================
+  // =====================================================
 
   function validateForm() {
     const newErrors = {};
@@ -127,7 +157,7 @@ function App() {
       newErrors.genre = "Please select a genre.";
     }
 
-    // Artist
+    // Artist Name
     if (!artistName.trim()) {
       newErrors.artistName = "Artist name is required.";
     } else if (artistName.trim().length < 3) {
@@ -157,9 +187,9 @@ function App() {
     return Object.keys(newErrors).length === 0;
   }
 
-  // =========================
+  // =====================================================
   // FORM SUBMIT
-  // =========================
+  // =====================================================
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -199,20 +229,93 @@ function App() {
     setErrors({});
   }
 
-  // =========================
-  // FILTER TRACKS
-  // =========================
+  // =====================================================
+  // TANSTACK TABLE COLUMNS
+  // =====================================================
 
-  const filteredTracks =
-    roleFilter === "All Roles"
-      ? tracks
-      : tracks.filter(
-          (track) => track.role === roleFilter
-        );
+  const columns = useMemo(
+    () =>
+      columnHelper.columns([
+        columnHelper.display({
+          id: "number",
+          header: "#",
+          cell: ({ row }) => row.getDisplayIndex() + 1,
+        }),
 
-  // =========================
+        columnHelper.accessor("title", {
+          header: "Track Title",
+          cell: ({ row }) => (
+            <span className="track-name">
+              {row.original.title}
+            </span>
+          ),
+        }),
+
+        columnHelper.accessor("genre", {
+          header: "Genre",
+          cell: ({ row }) => (
+            <span className="genre-badge">
+              {row.original.genre}
+            </span>
+          ),
+        }),
+
+        columnHelper.accessor("artist", {
+          header: "Artist",
+        }),
+
+        columnHelper.accessor("bpm", {
+          header: "BPM",
+        }),
+
+        columnHelper.accessor("label", {
+          header: "Record Label",
+        }),
+
+        columnHelper.accessor("role", {
+          header: "User Role",
+          cell: ({ row }) => (
+            <span
+              className={`role-badge ${row.original.role.toLowerCase()}`}
+            >
+              {row.original.role}
+            </span>
+          ),
+        }),
+      ]),
+    []
+  );
+
+  // =====================================================
+  // TANSTACK TABLE
+  // =====================================================
+
+  const table = useTable({
+    key: "spotify-track-manager",
+
+    features,
+
+    columns,
+
+    data: filteredTracks,
+
+    getRowId: (row) => String(row.id),
+
+    enableRowSelection: true,
+
+    enableMultiRowSelection: false,
+
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 3,
+      },
+    },
+  });
+
+  // =====================================================
   // UI
-  // =========================
+  // =====================================================
 
   return (
     <div className="app">
@@ -245,6 +348,7 @@ function App() {
         </div>
 
         <div className="waveform">
+          <span></span>
           <span></span>
           <span></span>
           <span></span>
@@ -618,11 +722,13 @@ function App() {
 
                   <Select
                     value={roleFilter}
-                    onChange={(event) =>
+                    onChange={(event) => {
                       setRoleFilter(
                         event.target.value
-                      )
-                    }
+                      );
+
+                      table.setPageIndex(0);
+                    }}
                     className="role-filter"
                   >
 
@@ -655,76 +761,91 @@ function App() {
 
                 <thead>
 
-                  <tr>
-                    <th>#</th>
-                    <th>Track Title</th>
-                    <th>Genre</th>
-                    <th>Artist</th>
-                    <th>BPM</th>
-                    <th>Record Label</th>
-                    <th>User Role</th>
-                  </tr>
+                  {table.getHeaderGroups().map(
+                    (headerGroup) => (
+                      <tr key={headerGroup.id}>
+
+                        {headerGroup.headers.map(
+                          (header) => (
+                            <th key={header.id}>
+
+                              {header.isPlaceholder
+                                ? null
+                                : (
+                                  <table.FlexRender
+                                    header={header}
+                                  />
+                                )}
+
+                            </th>
+                          )
+                        )}
+
+                      </tr>
+                    )
+                  )}
 
                 </thead>
 
                 <tbody>
 
-                  {filteredTracks.map(
-                    (track, index) => (
+                  {table.getRowModel().rows.length > 0 ? (
 
-                      <tr
-                        key={track.id}
-                        className={
-                          activeTrack?.id === track.id
-                            ? "selected-row"
-                            : ""
-                        }
-                        onClick={() =>
-                          setActiveTrack(track)
-                        }
-                      >
+                    table.getRowModel().rows.map(
+                      (row) => (
 
-                        <td>
-                          {index + 1}
-                        </td>
+                        <tr
+                          key={row.id}
 
-                        <td className="track-name">
-                          {track.title}
-                        </td>
+                          className={
+                            row.getIsSelected()
+                              ? "selected-row"
+                              : ""
+                          }
 
-                        <td>
-                          <span className="genre-badge">
-                            {track.genre}
-                          </span>
-                        </td>
+                          onClick={() => {
+                            row.toggleSelected(true);
+                            setActiveTrack(
+                              row.original
+                            );
+                          }}
+                        >
 
-                        <td>
-                          {track.artist}
-                        </td>
+                          {row.getAllCells().map(
+                            (cell) => (
 
-                        <td>
-                          {track.bpm}
-                        </td>
+                              <td key={cell.id}>
 
-                        <td>
-                          {track.label}
-                        </td>
+                                <table.FlexRender
+                                  cell={cell}
+                                />
 
-                        <td>
+                              </td>
 
-                          <span
-                            className={`role-badge ${
-                              track.role.toLowerCase()
-                            }`}
-                          >
-                            {track.role}
-                          </span>
+                            )
+                          )}
 
-                        </td>
+                        </tr>
 
-                      </tr>
-
+                      )
                     )
+
+                  ) : (
+
+                    <tr>
+
+                      <td
+                        colSpan="7"
+                        style={{
+                          textAlign: "center",
+                          padding: "30px",
+                        }}
+                      >
+                        No tracks found.
+                      </td>
+
+                    </tr>
+
                   )}
 
                 </tbody>
@@ -740,8 +861,20 @@ function App() {
 
               <button
                 type="button"
-                className="pagination-button disabled"
-                disabled
+
+                className={`pagination-button ${
+                  !table.getCanPreviousPage()
+                    ? "disabled"
+                    : ""
+                }`}
+
+                disabled={
+                  !table.getCanPreviousPage()
+                }
+
+                onClick={() =>
+                  table.previousPage()
+                }
               >
 
                 <ArrowBackIosNewIcon />
@@ -752,14 +885,34 @@ function App() {
 
 
               <span>
-                Page 1 of 1
+
+                Page{" "}
+
+                {table.state.pagination.pageIndex + 1}
+
+                {" "}of{" "}
+
+                {table.getPageCount()}
+
               </span>
 
 
               <button
                 type="button"
-                className="pagination-button disabled"
-                disabled
+
+                className={`pagination-button ${
+                  !table.getCanNextPage()
+                    ? "disabled"
+                    : ""
+                }`}
+
+                disabled={
+                  !table.getCanNextPage()
+                }
+
+                onClick={() =>
+                  table.nextPage()
+                }
               >
 
                 Next
@@ -800,23 +953,9 @@ function App() {
 
             {activeTrack && (
 
-              /*
-                IMPORTANT:
-                These class names match your App.css:
-                .active-content
-                .album-art
-                .album-title
-                .album-center
-                .album-artist
-                .track-details
-                .detail-row
-              */
-
               <div className="active-content">
 
-                {/* =========================
-                    ALBUM ART
-                ========================= */}
+                {/* ALBUM ART */}
 
                 <div className="album-art">
 
@@ -824,13 +963,11 @@ function App() {
                     SPOTIFY
                   </div>
 
-
                   <div className="album-center">
 
                     <FaSpotify />
 
                   </div>
-
 
                   <div className="album-artist">
                     TRACK MANAGER
@@ -839,16 +976,13 @@ function App() {
                 </div>
 
 
-                {/* =========================
-                    TRACK DETAILS
-                ========================= */}
+                {/* TRACK DETAILS */}
 
                 <div className="track-details">
 
                   <h3>
                     {activeTrack.title}
                   </h3>
-
 
                   <p className="artist-name">
                     {activeTrack.artist}
