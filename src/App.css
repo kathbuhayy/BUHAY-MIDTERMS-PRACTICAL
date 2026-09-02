@@ -852,3 +852,463 @@ select {
   font-size: 12px;
   line-height: 1.4;
 }
+/* =====================================================
+   COMPACT DESKTOP VIEW
+   Makes the entire dashboard fit better on laptop screens
+   ===================================================== */
+
+   * {
+    box-sizing: border-box;
+  }
+  
+  html,
+  body,
+  #root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+  }
+  
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Main application */
+  .app {
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* =====================================================
+     HEADER
+     ===================================================== */
+  
+  .topbar {
+    min-height: 78px !important;
+    padding: 14px 28px !important;
+  }
+  
+  .topbar h1 {
+    font-size: 24px !important;
+  }
+  
+  .spotify-logo {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  
+  .spotify-logo svg {
+    font-size: 28px !important;
+  }
+  
+  .exam-label {
+    font-size: 15px !important;
+  }
+  
+  .music-circle {
+    width: 46px !important;
+    height: 46px !important;
+  }
+  
+  /* =====================================================
+     MAIN DASHBOARD
+     ===================================================== */
+  
+  .dashboard {
+    padding: 26px 28px !important;
+    gap: 20px !important;
+    align-items: start;
+  }
+  
+  /* =====================================================
+     PANELS
+     ===================================================== */
+  
+  .panel {
+    border-radius: 14px !important;
+  }
+  
+  /* =====================================================
+     PANEL HEADERS
+     ===================================================== */
+  
+  .panel-title {
+    gap: 12px !important;
+  }
+  
+  .panel-title svg {
+    font-size: 25px !important;
+  }
+  
+  .panel-title h2 {
+    font-size: 21px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .panel-title p {
+    font-size: 14px !important;
+  }
+  
+  /* =====================================================
+     REGISTER FORM
+     ===================================================== */
+  
+  .register-panel {
+    padding: 24px 28px !important;
+  }
+  
+  .form-content {
+    gap: 16px !important;
+  }
+  
+  .field-group {
+    gap: 7px !important;
+  }
+  
+  .field-group label {
+    font-size: 15px !important;
+  }
+  
+  .field-group label svg {
+    font-size: 20px !important;
+  }
+  
+  .field-group input {
+    height: 48px !important;
+    padding: 0 15px !important;
+    font-size: 14px !important;
+  }
+  
+  .dark-select {
+    min-height: 48px !important;
+  }
+  
+  .add-track-button {
+    min-height: 48px !important;
+    font-size: 13px !important;
+  }
+  
+  /* =====================================================
+     RIGHT COLUMN
+     ===================================================== */
+  
+  .right-column {
+    gap: 20px !important;
+  }
+  
+  /* =====================================================
+     TRACK REGISTRY
+     ===================================================== */
+  
+  .registry-panel {
+    padding: 24px 16px 18px !important;
+  }
+  
+  .registry-header {
+    margin-bottom: 14px !important;
+  }
+  
+  /* Filter */
+  .filter-area {
+    margin-left: auto !important;
+  }
+  
+  .role-filter {
+    min-width: 170px !important;
+  }
+  
+  /* =====================================================
+     TABLE
+     ===================================================== */
+  
+  .track-table th {
+    padding: 10px 10px !important;
+    font-size: 13px !important;
+  }
+  
+  .track-table td {
+    padding: 10px 10px !important;
+    font-size: 13px !important;
+  }
+  
+  .role-badge {
+    padding: 7px 14px !important;
+    font-size: 12px !important;
+  }
+  
+  /* =====================================================
+     PAGINATION
+     ===================================================== */
+  
+  .pagination {
+    padding-top: 14px !important;
+  }
+  
+  .pagination-button {
+    height: 42px !important;
+    padding: 0 20px !important;
+    font-size: 13px !important;
+  }
+  
+  /* =====================================================
+     ACTIVE TRACK PROFILE
+     ===================================================== */
+  
+  .active-panel {
+    padding: 24px 30px !important;
+  }
+  
+  .active-content {
+    gap: 28px !important;
+    margin-top: 18px !important;
+  }
+  
+  .album-art {
+    width: 245px !important;
+    height: 245px !important;
+  }
+  
+  .album-title {
+    font-size: 18px !important;
+  }
+  
+  .album-artist {
+    font-size: 12px !important;
+  }
+  
+  .track-details {
+    gap: 10px !important;
+  }
+  
+  .track-details h3 {
+    font-size: 27px !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .track-details .artist-name {
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .detail-row {
+    min-height: 42px !important;
+    padding: 7px 0 !important;
+  }
+  
+  .detail-row svg {
+    font-size: 20px !important;
+  }
+  
+  .detail-row span,
+  .detail-row strong {
+    font-size: 14px !important;
+  }
+  
+  /* =====================================================
+     FOOTER
+     ===================================================== */
+  
+  .footer {
+    min-height: 48px !important;
+    padding: 10px 24px !important;
+    font-size: 12px !important;
+  }
+  
+  
+  /* =====================================================
+     LAPTOP / MACBOOK SCREEN
+     ===================================================== */
+  
+  @media (max-height: 850px) {
+  
+    .topbar {
+      min-height: 68px !important;
+      padding: 10px 24px !important;
+    }
+  
+    .spotify-logo {
+      width: 42px !important;
+      height: 42px !important;
+    }
+  
+    .topbar h1 {
+      font-size: 21px !important;
+    }
+  
+    .dashboard {
+      padding: 18px 24px !important;
+      gap: 16px !important;
+    }
+  
+    .register-panel {
+      padding: 20px 24px !important;
+    }
+  
+    .form-content {
+      gap: 12px !important;
+    }
+  
+    .field-group {
+      gap: 5px !important;
+    }
+  
+    .field-group input {
+      height: 43px !important;
+    }
+  
+    .dark-select {
+      min-height: 43px !important;
+    }
+  
+    .add-track-button {
+      min-height: 43px !important;
+    }
+  
+    .registry-panel {
+      padding: 20px 14px 14px !important;
+    }
+  
+    .active-panel {
+      padding: 20px 24px !important;
+    }
+  
+    .active-content {
+      gap: 22px !important;
+      margin-top: 14px !important;
+    }
+  
+    .album-art {
+      width: 210px !important;
+      height: 210px !important;
+    }
+  
+    .track-details h3 {
+      font-size: 24px !important;
+    }
+  
+    .detail-row {
+      min-height: 37px !important;
+      padding: 5px 0 !important;
+    }
+  
+    .footer {
+      min-height: 42px !important;
+      padding: 8px 20px !important;
+    }
+  }
+  
+  
+  /* =====================================================
+     SMALLER LAPTOP SCREEN
+     ===================================================== */
+  
+  @media (max-width: 1200px) {
+  
+    .dashboard {
+      padding-left: 18px !important;
+      padding-right: 18px !important;
+      gap: 16px !important;
+    }
+  
+    .register-panel {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+  
+    .active-content {
+      gap: 18px !important;
+    }
+  
+    .album-art {
+      width: 190px !important;
+      height: 190px !important;
+    }
+  
+    .track-details h3 {
+      font-size: 22px !important;
+    }
+  
+    .track-table th,
+    .track-table td {
+      padding-left: 7px !important;
+      padding-right: 7px !important;
+      font-size: 12px !important;
+    }
+  }
+
+/* =====================================================
+   ACTIVE PROFILE - USER ROLE
+   SMALLER + LOWER
+   ===================================================== */
+
+   .profile-role {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  
+    width: 100% !important;
+    max-width: 280px !important;
+  
+    height: 34px !important;
+    min-height: 34px !important;
+  
+    margin-top: 10px !important;
+  
+    padding: 3px 6px 3px 13px !important;
+  
+    border-radius: 20px !important;
+  
+    box-sizing: border-box !important;
+  }
+  
+  /* USER ROLE */
+  .profile-role > span:first-child {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+    line-height: 1 !important;
+  }
+  
+  /* CREATOR / LISTENER */
+  .profile-role .role-badge {
+    width: 82px !important;
+    min-width: 82px !important;
+    max-width: 82px !important;
+  
+    height: 28px !important;
+    min-height: 28px !important;
+  
+    padding: 0 !important;
+  
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  
+    border-radius: 16px !important;
+  
+    font-size: 11px !important;
+    font-weight: 700 !important;
+  
+    line-height: 1 !important;
+  }
+  .album-art {
+    width: 245px !important;
+    height: 245px !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    border: 2px solid #1ed760 !important;
+    background: #111 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .album-art img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }

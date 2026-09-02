@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { FaSpotify } from "react-icons/fa";
+import mansBestFriend from "./assets/mans-best-friend.jpg";
 
 import {
   createColumnHelper,
@@ -22,7 +23,6 @@ import {
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import PersonIcon from "@mui/icons-material/Person";
 import SpeedIcon from "@mui/icons-material/Speed";
@@ -71,48 +71,111 @@ function App() {
   const [tracks, setTracks] = useState([
     {
       id: 1,
-      title: "Midnight City",
-      genre: "Indie",
-      artist: "M83",
-      bpm: 105,
-      label: "Mute Records",
+      title: "Manchild",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 92,
+      label: "Island Records",
       role: "Creator",
     },
     {
       id: 2,
-      title: "Blinding Lights",
+      title: "Tears",
       genre: "Pop",
-      artist: "The Weeknd",
-      bpm: 171,
-      label: "XO Records",
+      artist: "Sabrina Carpenter",
+      bpm: 88,
+      label: "Island Records",
       role: "Listener",
     },
     {
       id: 3,
-      title: "Do I Wanna Know?",
-      genre: "Rock",
-      artist: "Arctic Monkeys",
-      bpm: 85,
-      label: "Domino",
+      title: "My Man on Willpower",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 96,
+      label: "Island Records",
       role: "Creator",
     },
     {
       id: 4,
-      title: "Take Five",
-      genre: "Jazz",
-      artist: "Dave Brubeck",
-      bpm: 174,
-      label: "Columbia",
+      title: "Sugar Talking",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 94,
+      label: "Island Records",
       role: "Listener",
     },
     {
       id: 5,
-      title: "Levitating",
+      title: "We Almost Broke Up Again Last Night",
       genre: "Pop",
-      artist: "Dua Lipa",
-      bpm: 103,
-      label: "Warner Records",
+      artist: "Sabrina Carpenter",
+      bpm: 86,
+      label: "Island Records",
       role: "Creator",
+    },
+    {
+      id: 6,
+      title: "Nobody's Son",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 90,
+      label: "Island Records",
+      role: "Listener",
+    },
+    {
+      id: 7,
+      title: "Never Getting Laid",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 98,
+      label: "Island Records",
+      role: "Creator",
+    },
+    {
+      id: 8,
+      title: "When Did You Get Hot?",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 100,
+      label: "Island Records",
+      role: "Listener",
+    },
+    {
+      id: 9,
+      title: "Go Go Juice",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 97,
+      label: "Island Records",
+      role: "Creator",
+    },
+    {
+      id: 10,
+      title: "Don't Worry I'll Make You Worry",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 89,
+      label: "Island Records",
+      role: "Listener",
+    },
+    {
+      id: 11,
+      title: "House Tour",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 95,
+      label: "Island Records",
+      role: "Creator",
+    },
+    {
+      id: 12,
+      title: "Goodbye",
+      genre: "Pop",
+      artist: "Sabrina Carpenter",
+      bpm: 84,
+      label: "Island Records",
+      role: "Listener",
     },
   ]);
 
@@ -203,7 +266,10 @@ function App() {
     if (filteredTracks.length > 0) {
       const firstTrack = filteredTracks[0];
 
-      setSelectedTrackId(String(firstTrack.id));
+      setSelectedTrackId(
+        String(firstTrack.id)
+      );
+
       setActiveTrack(firstTrack);
 
       setPagination((current) => ({
@@ -438,8 +504,7 @@ function App() {
 
     enableMultiRowSelection: false,
 
-    // IMPORTANT:
-    // Pagination is now controlled by React state.
+    // Controlled pagination
     state: {
       pagination,
     },
@@ -516,6 +581,7 @@ function App() {
 
       <main className="dashboard">
 
+
         <section className="panel register-panel">
 
           <div className="panel-title">
@@ -538,7 +604,6 @@ function App() {
             className="form-content"
             onSubmit={handleSubmit}
           >
-
 
             <div className="field-group">
 
@@ -807,7 +872,15 @@ function App() {
 
           <section className="panel registry-panel">
 
-            <div className="registry-header">
+            <div
+              className="registry-header"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
 
               <div className="panel-title">
 
@@ -827,29 +900,36 @@ function App() {
 
               </div>
 
-              <div className="filter-area">
-
-                <FilterAltIcon />
-
-                <FormControl size="small">
+<div
+  className="filter-area"
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginLeft: "auto",
+  }}
+>
+  <FormControl
+    size="small"
+    sx={{
+      minWidth: "170px",
+    }}
+  >
 
                   <Select
                     value={roleFilter}
+
                     onChange={(event) => {
                       const newFilter =
                         event.target.value;
 
                       setRoleFilter(newFilter);
 
-                      // Reset to page 1 whenever
-                      // the role filter changes.
                       setPagination((current) => ({
                         ...current,
                         pageIndex: 0,
                       }));
 
-                      // Select the first track
-                      // belonging to the new filter.
                       const newFilteredTracks =
                         newFilter === "All Roles"
                           ? tracks
@@ -869,18 +949,120 @@ function App() {
                         );
                       }
                     }}
+
                     className="role-filter"
+
+                    displayEmpty
+
+                    sx={{
+                      height: "48px",
+
+                      color: "#ffffff",
+
+                      backgroundColor:
+                        "rgba(8, 14, 12, 0.75)",
+
+                      borderRadius: "9px",
+
+                      "& .MuiSelect-select": {
+                        color: "#ffffff",
+                        fontSize: "16px",
+                        fontWeight: 500,
+                        display: "flex",
+                        alignItems: "center",
+                        paddingLeft: "16px",
+                      },
+
+                      "& .MuiSelect-icon": {
+                        color: "#ffffff",
+                        fontSize: "28px",
+                        right: "8px",
+                      },
+
+                      "& fieldset": {
+                        borderColor: "#29332f",
+                        borderWidth: "2px",
+                      },
+
+                      "&:hover fieldset": {
+                        borderColor: "#3b4742",
+                      },
+
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#1ed760",
+                      },
+                    }}
                   >
 
-                    <MenuItem value="All Roles">
+                    <MenuItem
+                      value="All Roles"
+                      sx={{
+                        color: "#ffffff",
+                        backgroundColor: "#101815",
+
+                        "&:hover": {
+                          backgroundColor: "#18221e",
+                        },
+
+                        "&.Mui-selected": {
+                          backgroundColor:
+                            "#1d2b25",
+                        },
+
+                        "&.Mui-selected:hover": {
+                          backgroundColor:
+                            "#24352d",
+                        },
+                      }}
+                    >
                       All Roles
                     </MenuItem>
 
-                    <MenuItem value="Creator">
+                    <MenuItem
+                      value="Creator"
+                      sx={{
+                        color: "#ffffff",
+                        backgroundColor: "#101815",
+
+                        "&:hover": {
+                          backgroundColor: "#18221e",
+                        },
+
+                        "&.Mui-selected": {
+                          backgroundColor:
+                            "#1d2b25",
+                        },
+
+                        "&.Mui-selected:hover": {
+                          backgroundColor:
+                            "#24352d",
+                        },
+                      }}
+                    >
                       Creator
                     </MenuItem>
 
-                    <MenuItem value="Listener">
+                    <MenuItem
+                      value="Listener"
+                      sx={{
+                        color: "#ffffff",
+                        backgroundColor: "#101815",
+
+                        "&:hover": {
+                          backgroundColor: "#18221e",
+                        },
+
+                        "&.Mui-selected": {
+                          backgroundColor:
+                            "#1d2b25",
+                        },
+
+                        "&.Mui-selected:hover": {
+                          backgroundColor:
+                            "#24352d",
+                        },
+                      }}
+                    >
                       Listener
                     </MenuItem>
 
@@ -891,7 +1073,6 @@ function App() {
               </div>
 
             </div>
-
 
             <div className="table-wrapper">
 
@@ -1036,11 +1217,9 @@ function App() {
 
               </button>
 
-
               <span>
                 Page {currentPage} of {pageCount}
               </span>
-
 
               <button
                 type="button"
@@ -1074,7 +1253,6 @@ function App() {
 
           </section>
 
-
           <section className="panel active-panel">
 
             <div className="panel-title">
@@ -1099,24 +1277,13 @@ function App() {
 
               <div className="active-content">
 
+<div className="album-art">
+  <img
+    src={mansBestFriend}
+    alt="Sabrina Carpenter - Man's Best Friend"
+  />
+</div>
 
-                <div className="album-art">
-
-                  <div className="album-title">
-                    SPOTIFY
-                  </div>
-
-                  <div className="album-center">
-
-                    <FaSpotify />
-
-                  </div>
-
-                  <div className="album-artist">
-                    TRACK MANAGER
-                  </div>
-
-                </div>
 
 
                 <div className="track-details">
@@ -1128,7 +1295,6 @@ function App() {
                   <p className="artist-name">
                     {activeTrack.artist}
                   </p>
-
 
                   <div className="detail-row">
 
@@ -1158,7 +1324,6 @@ function App() {
 
                   </div>
 
-
                   <div className="detail-row">
 
                     <SpeedIcon />
@@ -1186,7 +1351,6 @@ function App() {
                     </strong>
 
                   </div>
-
 
                   <div className="profile-role">
 
