@@ -1,184 +1,888 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* ================================
+   SPOTIFY TRACK MANAGER
+   SET 1 PRACTICAL EXAM
+================================ */
 
-  &:hover {
-    border-color: var(--accent-border);
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #050708;
+  color: #ffffff;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+/* ================================
+   MAIN APP
+================================ */
+
+.app {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 70% 10%,
+      rgba(29, 185, 84, 0.04),
+      transparent 35%
+    ),
+    #050708;
+}
+
+/* ================================
+   HEADER
+================================ */
+
+.topbar {
+  min-height: 80px;
+  padding: 0 28px;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  border-bottom: 1px solid #151b1d;
+  background: rgba(4, 7, 8, 0.96);
+}
+
+.brand-area {
+  display: flex;
+  align-items: center;
+  min-width: 430px;
+}
+
+.spotify-logo {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #1ed760;
+  color: #050708;
+
+  border-radius: 50%;
+
+  flex-shrink: 0;
+}
+
+.spotify-logo svg {
+  width: 30px;
+  height: 30px;
+}
+
+.topbar h1 {
+  margin: 0 0 0 14px;
+
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.7px;
+}
+
+.spotify-green {
+  color: #1ed760;
+}
+
+.header-divider {
+  width: 1px;
+  height: 26px;
+
+  margin: 0 26px;
+
+  background: #526057;
+}
+
+.exam-label {
+  color: #a6aaa8;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.waveform {
+  flex: 1;
+
+  height: 38px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+
+  opacity: 0.9;
+}
+
+.waveform span {
+  width: 3px;
+  border-radius: 20px;
+  background: #1ed760;
+}
+
+.waveform span:nth-child(1),
+.waveform span:nth-child(19) {
+  height: 3px;
+  opacity: 0.15;
+}
+
+.waveform span:nth-child(2),
+.waveform span:nth-child(18) {
+  height: 6px;
+  opacity: 0.2;
+}
+
+.waveform span:nth-child(3),
+.waveform span:nth-child(17) {
+  height: 9px;
+  opacity: 0.3;
+}
+
+.waveform span:nth-child(4),
+.waveform span:nth-child(16) {
+  height: 13px;
+  opacity: 0.4;
+}
+
+.waveform span:nth-child(5),
+.waveform span:nth-child(15) {
+  height: 18px;
+}
+
+.waveform span:nth-child(6),
+.waveform span:nth-child(14) {
+  height: 25px;
+}
+
+.waveform span:nth-child(7),
+.waveform span:nth-child(13) {
+  height: 31px;
+}
+
+.waveform span:nth-child(8),
+.waveform span:nth-child(12) {
+  height: 20px;
+}
+
+.waveform span:nth-child(9),
+.waveform span:nth-child(11) {
+  height: 34px;
+}
+
+.waveform span:nth-child(10) {
+  height: 38px;
+}
+
+.music-circle {
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid #1ed760;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #1ed760;
+}
+
+/* ================================
+   DASHBOARD
+================================ */
+
+.dashboard {
+  width: calc(100% - 52px);
+  max-width: 1500px;
+
+  margin: 24px auto;
+
+  display: grid;
+  grid-template-columns: 438px 1fr;
+
+  gap: 20px;
+}
+
+/* ================================
+   PANELS
+================================ */
+
+.panel {
+  border: 1px solid #1b2921;
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 23, 20, 0.94),
+      rgba(5, 9, 10, 0.96)
+    );
+
+  overflow: hidden;
+}
+
+.register-panel {
+  min-height: 835px;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  color: #1ed760;
+}
+
+.panel-title svg {
+  font-size: 28px;
+}
+
+.panel-title h2 {
+  margin: 0;
+
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+}
+
+/* ================================
+   FORM
+================================ */
+
+.register-panel {
+  padding: 26px;
+}
+
+.form-content {
+  margin-top: 34px;
+}
+
+.field-group {
+  margin-bottom: 24px;
+}
+
+.field-group label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 10px;
+
+  color: #f2f2f2;
+
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.field-group label svg {
+  color: #1ed760;
+  font-size: 23px;
+}
+
+.field-group input {
+  width: 100%;
+  height: 49px;
+
+  padding: 0 15px;
+
+  border: 1px solid #26312d;
+  border-radius: 8px;
+
+  outline: none;
+
+  color: #ffffff;
+  background: #0b1011;
+
+  font-size: 14px;
+
+  transition: 0.2s ease;
+}
+
+.field-group input::placeholder {
+  color: #777e7b;
+}
+
+.field-group input:focus {
+  border-color: #1ed760;
+  box-shadow: 0 0 0 1px rgba(30, 215, 96, 0.18);
+}
+
+/* MUI Select */
+
+.dark-select {
+  height: 49px !important;
+
+  color: #ffffff !important;
+  background: #0b1011 !important;
+
+  border-radius: 8px !important;
+}
+
+.dark-select .MuiOutlinedInput-notchedOutline {
+  border-color: #26312d !important;
+}
+
+.dark-select:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #1ed760 !important;
+}
+
+.dark-select.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #1ed760 !important;
+}
+
+.dark-select .MuiSelect-icon {
+  color: #ffffff;
+}
+
+.placeholder {
+  color: #777e7b;
+}
+
+/* Role */
+
+.role-field {
+  margin-top: 5px;
+}
+
+.role-group {
+  gap: 25px;
+}
+
+.role-group .MuiFormControlLabel-root {
+  margin-left: 0;
+  margin-right: 12px;
+}
+
+.role-group .MuiFormControlLabel-label {
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.role-group .MuiRadio-root {
+  color: #26312d;
+  padding: 6px;
+}
+
+.role-group .MuiRadio-root.Mui-checked {
+  color: #1ed760;
+}
+
+/* Add Button */
+
+.add-track-button {
+  width: 100% !important;
+  height: 56px !important;
+
+  margin-top: 7px !important;
+
+  background: #1ed760 !important;
+  color: #061008 !important;
+
+  border-radius: 8px !important;
+
+  font-size: 15px !important;
+  font-weight: 700 !important;
+
+  box-shadow: none !important;
+}
+
+.add-track-button:hover {
+  background: #1fdf63 !important;
+  box-shadow: 0 0 20px rgba(30, 215, 96, 0.12) !important;
+}
+
+/* ================================
+   RIGHT COLUMN
+================================ */
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  min-width: 0;
+}
+
+/* ================================
+   REGISTRY
+================================ */
+
+.registry-panel {
+  padding: 22px 14px 18px;
+}
+
+.registry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 4px 19px;
+}
+
+.role-filter {
+  height: 42px;
+
+  min-width: 205px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0 13px;
+
+  border: 1px solid #27332e;
+  border-radius: 9px;
+
+  color: #ffffff;
+  background: #090e0f;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.role-filter svg {
+  color: #1ed760;
+  font-size: 21px;
+}
+
+.role-filter .filter-arrow {
+  margin-left: auto;
+  font-size: 20px;
+}
+
+/* ================================
+   TABLE
+================================ */
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.track-table {
+  width: 100%;
+  min-width: 850px;
+
+  border-collapse: collapse;
+}
+
+.track-table th {
+  padding: 11px 10px;
+
+  color: #1ed760;
+
+  text-align: left;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.track-table td {
+  padding: 13px 10px;
+
+  border-bottom: 1px solid #1c2522;
+
+  color: #eeeeee;
+
+  font-size: 14px;
+
+  white-space: nowrap;
+}
+
+.track-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.track-table tbody tr:hover {
+  background: rgba(30, 215, 96, 0.035);
+}
+
+.track-table .selected-row {
+  background: rgba(30, 215, 96, 0.11);
+}
+
+.track-name {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  font-weight: 500;
+}
+
+.play-button {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 8px;
+
+  color: #061008;
+  background: #1ed760;
+
+  font-size: 12px;
+}
+
+/* ================================
+   ROLE BADGES
+================================ */
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 92px;
+
+  padding: 7px 13px;
+
+  border-radius: 18px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.creator {
+  color: #59e98b;
+  background: rgba(30, 215, 96, 0.14);
+}
+
+.listener {
+  color: #8bc9ef;
+  background: rgba(48, 112, 160, 0.18);
+}
+
+/* ================================
+   PAGINATION
+================================ */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 19px 88px 3px;
+
+  color: #c5c9c7;
+
+  font-size: 14px;
+}
+
+.pagination strong {
+  color: #ffffff;
+}
+
+.pagination-button {
+  min-width: 120px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border: 1px solid #1ed760;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #eeeeee;
+
+  cursor: pointer;
+
+  font-size: 13px;
+}
+
+.pagination-button svg {
+  font-size: 14px;
+}
+
+.pagination-button:hover {
+  background: rgba(30, 215, 96, 0.08);
+}
+
+.pagination-button.disabled {
+  border-color: #29312e;
+  color: #555b58;
+  cursor: not-allowed;
+}
+
+/* ================================
+   ACTIVE TRACK
+================================ */
+
+.active-panel {
+  padding: 22px 27px 29px;
+}
+
+.active-content {
+  display: grid;
+  grid-template-columns: 255px 1fr;
+
+  gap: 38px;
+
+  margin-top: 20px;
+}
+
+.album-art {
+  height: 250px;
+
+  border: 1px solid #1b5530;
+  border-radius: 9px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 19px 15px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(70, 70, 70, 0.5),
+      rgba(5, 8, 8, 0.95)
+    ),
+    linear-gradient(145deg, #252525, #090b0b);
+
+  overflow: hidden;
+}
+
+.album-title {
+  width: 100%;
+
+  color: #1ed760;
+
+  font-size: 17px;
+  font-weight: 500;
+
+  letter-spacing: 5px;
+  text-align: center;
+}
+
+.album-center {
+  width: 92px;
+  height: 92px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid #1ed760;
+  border-radius: 50%;
+
+  color: #1ed760;
+
+  background: rgba(30, 215, 96, 0.04);
+}
+
+.album-center svg {
+  font-size: 52px;
+}
+
+.album-artist {
+  color: #d5d5d5;
+
+  font-size: 9px;
+
+  letter-spacing: 5px;
+}
+
+.track-details {
+  min-width: 0;
+}
+
+.track-details h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.artist-name {
+  margin: 7px 0 21px;
+
+  color: #eeeeee;
+
+  font-size: 16px;
+}
+
+.detail-row {
+  min-height: 43px;
+
+  display: grid;
+  grid-template-columns: 28px 150px 1fr;
+  align-items: center;
+
+  border-bottom: 1px solid #202724;
+
+  color: #aeb3b0;
+
+  font-size: 15px;
+}
+
+.detail-row svg {
+  color: #1ed760;
+  font-size: 20px;
+}
+
+.detail-row strong {
+  color: #f0f0f0;
+  font-weight: 500;
+}
+
+.profile-role {
+  display: inline-flex;
+
+  padding: 6px 14px;
+
+  border-radius: 17px;
+
+  color: #59e98b;
+  background: rgba(30, 215, 96, 0.14);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ================================
+   FOOTER
+================================ */
+
+.footer {
+  min-height: 70px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+
+  color: #777e7b;
+
+  border-top: 1px solid #111718;
+
+  font-size: 14px;
+}
+
+.footer-heart {
+  color: #1ed760;
+  font-size: 17px;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 1150px) {
+  .dashboard {
+    grid-template-columns: 360px 1fr;
   }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+
+  .brand-area {
+    min-width: auto;
+  }
+
+  .exam-label {
+    display: none;
+  }
+
+  .header-divider {
+    margin: 0 16px;
+  }
+
+  .waveform {
+    display: none;
+  }
+
+  .pagination {
+    padding-left: 30px;
+    padding-right: 30px;
   }
 }
 
-.hero {
-  position: relative;
+@media (max-width: 900px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
 
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
+  .register-panel {
+    min-height: auto;
+  }
+
+  .active-content {
+    grid-template-columns: 220px 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .topbar {
+    padding: 15px 18px;
+  }
+
+  .topbar h1 {
+    font-size: 19px;
+  }
+
+  .spotify-logo {
+    width: 38px;
+    height: 38px;
+    font-size: 28px;
+  }
+
+  .music-circle {
+    display: none;
+  }
+
+  .dashboard {
+    width: calc(100% - 24px);
+    margin: 12px auto;
+  }
+
+  .registry-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .role-filter {
+    width: 100%;
+  }
+
+  .active-content {
+    grid-template-columns: 1fr;
+  }
+
+  .album-art {
+    width: 100%;
+    max-width: 270px;
     margin: 0 auto;
   }
 
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
+  .pagination {
+    padding: 18px 5px 3px;
   }
 
-  .framework,
-  .vite {
-    position: absolute;
+  .pagination-button {
+    min-width: 95px;
   }
 
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
-
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
+  .footer {
+    padding: 20px;
     flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
-}
-
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
-  width: 100%;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
-
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
   }
 }
